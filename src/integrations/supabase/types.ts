@@ -14,7 +14,151 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      content_analysis: {
+        Row: {
+          content_category: string
+          created_at: string
+          engagement_level: string
+          id: string
+          sentiment_score: number
+          topic: string
+        }
+        Insert: {
+          content_category: string
+          created_at?: string
+          engagement_level: string
+          id?: string
+          sentiment_score: number
+          topic: string
+        }
+        Update: {
+          content_category?: string
+          created_at?: string
+          engagement_level?: string
+          id?: string
+          sentiment_score?: number
+          topic?: string
+        }
+        Relationships: []
+      }
+      engagement_metrics: {
+        Row: {
+          content_diversity_score: number | null
+          experiment_user_id: string
+          id: string
+          listening_minutes: number
+          recorded_at: string
+          sessions_count: number
+          week_number: number
+        }
+        Insert: {
+          content_diversity_score?: number | null
+          experiment_user_id: string
+          id?: string
+          listening_minutes: number
+          recorded_at?: string
+          sessions_count: number
+          week_number: number
+        }
+        Update: {
+          content_diversity_score?: number | null
+          experiment_user_id?: string
+          id?: string
+          listening_minutes?: number
+          recorded_at?: string
+          sessions_count?: number
+          week_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engagement_metrics_experiment_user_id_fkey"
+            columns: ["experiment_user_id"]
+            isOneToOne: false
+            referencedRelation: "experiment_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      experiment_users: {
+        Row: {
+          created_at: string
+          group_type: string
+          id: string
+          segment: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          group_type: string
+          id?: string
+          segment: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          group_type?: string
+          id?: string
+          segment?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feature_importance: {
+        Row: {
+          created_at: string
+          feature_name: string
+          group_type: string
+          id: string
+          importance_score: number
+        }
+        Insert: {
+          created_at?: string
+          feature_name: string
+          group_type: string
+          id?: string
+          importance_score: number
+        }
+        Update: {
+          created_at?: string
+          feature_name?: string
+          group_type?: string
+          id?: string
+          importance_score?: number
+        }
+        Relationships: []
+      }
+      retention_data: {
+        Row: {
+          day_number: number
+          experiment_user_id: string
+          id: string
+          is_active: boolean
+          recorded_at: string
+        }
+        Insert: {
+          day_number: number
+          experiment_user_id: string
+          id?: string
+          is_active: boolean
+          recorded_at?: string
+        }
+        Update: {
+          day_number?: number
+          experiment_user_id?: string
+          id?: string
+          is_active?: boolean
+          recorded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retention_data_experiment_user_id_fkey"
+            columns: ["experiment_user_id"]
+            isOneToOne: false
+            referencedRelation: "experiment_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

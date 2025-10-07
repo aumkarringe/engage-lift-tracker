@@ -1,12 +1,19 @@
+import { useState } from "react";
 import { MetricCard } from "@/components/MetricCard";
 import { EngagementChart } from "@/components/EngagementChart";
 import { RetentionChart } from "@/components/RetentionChart";
+import { FilterBar } from "@/components/FilterBar";
+import { FeatureImportanceChart } from "@/components/FeatureImportanceChart";
+import { ContentHeatmap } from "@/components/ContentHeatmap";
+import { StatisticalSignificance } from "@/components/StatisticalSignificance";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { TrendingUp, Users, Clock, Target, BarChart3, Brain } from "lucide-react";
+import { TrendingUp, Users, Clock, Target, BarChart3, Brain, Database } from "lucide-react";
 
 const Index = () => {
+  const [selectedSegment, setSelectedSegment] = useState("all");
+  const [selectedPeriod, setSelectedPeriod] = useState("month");
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -35,6 +42,18 @@ const Index = () => {
               </Button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Interactive Filters Section */}
+      <section className="container mx-auto px-4 py-8 border-b border-border/50">
+        <div className="max-w-6xl mx-auto">
+          <FilterBar 
+            selectedSegment={selectedSegment}
+            setSelectedSegment={setSelectedSegment}
+            selectedPeriod={selectedPeriod}
+            setSelectedPeriod={setSelectedPeriod}
+          />
         </div>
       </section>
 
@@ -154,6 +173,30 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Statistical Significance Section */}
+      <section className="container mx-auto px-4 py-16 border-t border-border/50">
+        <div className="max-w-6xl mx-auto">
+          <StatisticalSignificance />
+        </div>
+      </section>
+
+      {/* Advanced Analytics Section */}
+      <section className="container mx-auto px-4 py-16 border-t border-border/50">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl md:text-4xl font-bold">Advanced Analytics</h2>
+            <p className="text-muted-foreground text-lg">
+              Machine learning insights and content analysis
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <FeatureImportanceChart />
+            <ContentHeatmap />
+          </div>
+        </div>
+      </section>
+
       {/* Business Insights Section */}
       <section className="container mx-auto px-4 py-16 border-t border-border/50">
         <div className="max-w-4xl mx-auto space-y-8">
@@ -203,11 +246,27 @@ const Index = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-3">
-            {["Python", "Pandas", "Scikit-learn", "Statsmodels", "XGBoost", "NLP/NLTK", "AWS SageMaker", "SQL", "Matplotlib", "Seaborn"].map((tech) => (
+            {["Python", "Pandas", "Scikit-learn", "Statsmodels", "XGBoost", "NLP/NLTK", "Lovable Cloud", "PostgreSQL", "SQL", "Matplotlib", "Seaborn", "React", "TypeScript"].map((tech) => (
               <Badge key={tech} variant="secondary" className="px-4 py-2 text-sm">
                 {tech}
               </Badge>
             ))}
+          </div>
+
+          <div className="pt-8">
+            <Card className="p-6 gradient-card border-border/50">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Database className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-foreground">Backend Integration</h3>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                This project uses Lovable Cloud for data persistence, enabling real experimental data storage and queries.
+              </p>
+              <Button className="gradient-primary text-primary-foreground border-0">
+                <Database className="mr-2 h-4 w-4" />
+                View Backend
+              </Button>
+            </Card>
           </div>
         </div>
       </section>
