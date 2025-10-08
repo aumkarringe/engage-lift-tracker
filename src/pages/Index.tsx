@@ -6,6 +6,7 @@ import { FilterBar } from "@/components/FilterBar";
 import { FeatureImportanceChart } from "@/components/FeatureImportanceChart";
 import { ContentHeatmap } from "@/components/ContentHeatmap";
 import { StatisticalSignificance } from "@/components/StatisticalSignificance";
+import { InteractiveDemoSection } from "@/components/InteractiveDemoSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -14,6 +15,20 @@ import { TrendingUp, Users, Clock, Target, BarChart3, Brain, Database } from "lu
 const Index = () => {
   const [selectedSegment, setSelectedSegment] = useState("all");
   const [selectedPeriod, setSelectedPeriod] = useState("month");
+
+  const getMetricMultiplier = (segment: string) => {
+    const multipliers: Record<string, number> = {
+      all: 1,
+      new_users: 0.85,
+      active_users: 1.05,
+      power_users: 1.2,
+      premium: 1.15,
+    };
+    return multipliers[segment] || 1;
+  };
+
+  const multiplier = getMetricMultiplier(selectedSegment);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -70,31 +85,35 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <MetricCard
               title="30-Day Retention Lift"
-              value="8.2%"
-              change={8.2}
+              value={`${(8.2 * multiplier).toFixed(1)}%`}
+              change={8.2 * multiplier}
               trend="up"
               description="Incremental increase vs. generic"
+              tooltip="The percentage point increase in users still active after 30 days when comparing personalized vs. generic recommendations."
             />
             <MetricCard
               title="Avg. Session Length"
-              value="65 min"
-              change={15.3}
+              value={`${Math.round(65 * multiplier)} min`}
+              change={15.3 * multiplier}
               trend="up"
               description="Treatment group mean"
+              tooltip="Average time users spend listening per session. Longer sessions indicate higher engagement and content satisfaction."
             />
             <MetricCard
               title="Weekly Sessions"
-              value="4.8"
-              change={12.1}
+              value={(4.8 * multiplier).toFixed(1)}
+              change={12.1 * multiplier}
               trend="up"
               description="Sessions per active user"
+              tooltip="How many times per week an active user opens the app. Higher frequency suggests the recommendations keep users coming back."
             />
             <MetricCard
               title="Content Discovery"
-              value="3.2x"
-              change={220}
+              value={`${(3.2 * multiplier).toFixed(1)}x`}
+              change={220 * multiplier}
               trend="up"
               description="More diverse listening"
+              tooltip="Measures how much more diverse content users explore with personalization. A 3.2x multiplier means users discover 220% more unique content."
             />
           </div>
         </div>
@@ -167,11 +186,14 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <EngagementChart />
-            <RetentionChart />
+            <EngagementChart selectedPeriod={selectedPeriod} />
+            <RetentionChart selectedSegment={selectedSegment} />
           </div>
         </div>
       </section>
+
+      {/* Interactive Demo Section */}
+      <InteractiveDemoSection />
 
       {/* Statistical Significance Section */}
       <section className="container mx-auto px-4 py-16 border-t border-border/50">
